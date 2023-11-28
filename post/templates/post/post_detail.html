@@ -1,0 +1,18 @@
+{% extends 'mail_service/base.html' %}
+{% load static %}
+{% load tags%}
+{% block content %}
+<h2></h2>
+          <div class="table-responsive">
+           Статья: {{object.title}}</br>
+               <div class="card shadow-sm">
+            <img class="card-img-top"
+                 crs = "{{ object.image|media }}"
+                 alt="Card image cap"/></div>
+           Автор: {{object.author}}</br>
+           {{object.body}}</br></br>
+           {{object.time_create}}
+          </div>
+
+
+{% endblock %}

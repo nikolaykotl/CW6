@@ -1,0 +1,13 @@
+{% extends 'mail_service/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Рассылка</h2>
+          <div class="table-responsive">
+           Рассылка: {{object.id}}</br>
+           Создана: {{object.date_create}} {{object.time_create}}</br>
+           Название: {{object.title}}</br>
+           Содержание:  {{object.body}}
+
+
+{% endblock %}

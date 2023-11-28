@@ -1,0 +1,41 @@
+{% extends 'mail_service/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Логи</h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Id лога</th>
+                  <th>Дата</th>
+                  <th>Время</th>
+                  <th>Статус</th>
+                  <th>Ответ сервера</th>
+                  <th>Получатель</th>
+                  <th>Сообщение</th>
+                </tr>
+              </thead>
+              <tbody>
+               {% for object in object_list %}
+                <tr>
+                  <td>{{object.id}}</td>
+                  <td>{{object.date}}</td>
+                  <td>{{object.time}}</td>
+                  <td>{{object.status}}</td>
+                  <td>{{object.server_response}}</td>
+                  <td>{{object.client.first_name}} {{object.client.last_name}} {{object.client.email}}</br>
+                  <td>{{object.message.title}}</br>
+                  {% endfor %}
+                  </td>
+                  <td>
+                  {% for client in object.clients.all %}
+                    {{client.email}}</br>
+                  {% endfor %}
+                  </td>
+                </tr>
+              </table>
+            Количество логов: {{logs_list|length}}
+            {% include 'mail_service/includes/paginator.html'%}
+              </tbody>
+{% endblock %}

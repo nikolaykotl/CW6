@@ -1,0 +1,63 @@
+{% extends 'mail_service/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Список рассылок</h2>
+{% if user.is_authenticated %}
+<a  class="btn btn-sm btn-outline-success" href="{% url 'mail_service:create' %}">Добавить рассылку</a>
+{% endif %}
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>№ рассылки</th>
+                  <th>Дата создания</th>
+                  <th>Название</th>
+                  <th>Содержание письма</th>
+                  <th>Периодичность</th>
+                 {% if user == object.user or user.is_superuser %}
+                  <th>Получатель</th>
+                  <th>Адрес электронной почты получателя</th>
+                 {% endif %}
+                    <th>Действия</th>
+                </tr>
+              </thead>
+
+              <tbody>
+               {% for object in object_list %}
+               {% if object.is_active%}
+                <tr>
+                  <td>{{object.id}}</td>
+                  <td>{{object.date_create}}{{object.time_create}} </td>
+                  <td>{{object.title}}</td>
+                  <td>{{object.body|slice:100}}</td>
+                  <td>{{object.setting}}</td>
+                  {% if user == object.user or user.is_superuser %}
+                  <td>
+                  {% for client in object.clients.all %}
+                   {{client.first_name}} {{client.last_name}}</br>
+                  {% endfor %}
+                  </td>
+                  <td>
+                  {% for client in object.clients.all %}
+                    {{client.email}}</br>
+                  {% endfor %}
+                      {% endif %}
+                      {% endif %}
+                  </td>
+                  <td><a <button type="button" class="btn btn-sm btn-outline-success" href="{% url 'mail_service:message_view' object.pk %}">Просмотр</button></a></br>
+                      {% if user == object.user %}
+                      <a <button type="button" class="btn btn-sm btn-outline-info" href="{% url 'mail_service:message_edit' object.pk %}">Изменить</button></a></br>
+                      <a <button type="button" class="btn btn-sm btn-outline-info" href="{% url 'mail_service:message_delete' object.pk %}">Удалить</button></a>
+                      {% endif %}
+                  </td>
+                </tr>
+
+                 {% endfor %}
+
+
+{% include 'mail_service/includes/paginator.html'%}
+                </tbody>
+            </table>
+Рассылок на странице: {{messages_list|length}}
+{% endblock%}
